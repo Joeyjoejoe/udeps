@@ -1,13 +1,5 @@
 {
-  ;; :sources key allow to define additional sources to get functions data from
-  :sources {
-    ;; :api type is a source from which you get data by querying an uri
-    ;; with a function name
-    :pure-functions.org {:type   :api
-                         :method :get
-                         :uri    "http://pure-functions.org/api/function"}
-
-    ;; :file type allow to define a directory containing
-    ;; functions as files
-    :local {:type :file
-            :path "/home/victor/some-folder/"}}}
+ ;; :file type allow to define a directory containing
+ ;; functions as files
+ :folder ".udeps/"
+}
