@@ -31,3 +31,12 @@
   (println)
   (println gold icon (str orange " µdeps") "\u27A5" (str grey nsname reset))
   (println)))
+
+(defn cache
+  [fname]
+  (let [icon  "\u2714"
+        blue  "\u001B[38;5;27m"
+        grey  "\u001B[38;5;243m"
+        tab   " "
+        reset "\u001B[0m"]
+   (println tab blue icon grey (str "#'" fname) reset)))

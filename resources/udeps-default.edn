@@ -1,5 +1,4 @@
 {
- ;; :file type allow to define a directory containing
- ;; functions as files
- :folder ".udeps/"
+ ;; :src/folder source point to a directory of edn files
+ :src/folder ".udeps/"
 }
