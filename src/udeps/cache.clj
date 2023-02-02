@@ -18,5 +18,5 @@
         path (str ".udeps-cache/" h ".edn")]
     (try
       (if-let [data (-> path slurp edn/read-string)]
-        (assoc data :cache true))
+        (assoc data :source :src/cache))
       (catch java.io.FileNotFoundException e))))

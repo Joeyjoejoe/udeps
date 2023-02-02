@@ -10,21 +10,21 @@
 
 (defn- query-dep [f dep]
   (try
-    (f dep)
+    (assoc (f dep) :source (->> dep namespace (str ":src/")))
     (catch clojure.lang.ExceptionInfo e
       (let [msg (ex-message e)
             data (ex-data e)]
           (log/error (:dep data) msg)))))
 
 (defmulti read-dep!
-  (fn [dep sources]
+  (fn [dep conf]
     (class dep)))
 
 (defmethod read-dep!
   clojure.lang.Keyword
-  [dep sources]
+  [dep conf]
   (let [src-k   (src-key dep)]
-    (if-let [f (src-k sources)]
+    (if-let [f (src-k conf)]
       (if-let [data (c/get-cache dep)]
         data
         (->> dep
@@ -34,7 +34,7 @@
 
 (defmethod read-dep!
   clojure.lang.PersistentVector
-  [dep sources]
+  [dep conf]
   (let [[fkey _ fname] dep]
-    (if-let [fdata (read-dep! fkey sources)]
+    (if-let [fdata (read-dep! fkey conf)]
       (merge fdata {:name fname}))))

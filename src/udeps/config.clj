@@ -3,7 +3,7 @@
             [clojure.java.io :as io]
             [clojure.edn :as edn]))
 
-(derive :src/cache :src/folder)
+(derive :cfg/verbose :cfg/param)
 
 (defn init []
   (let [default-config (-> "udeps-default.edn" io/resource slurp ig/read-string)]
@@ -20,3 +20,5 @@
         fdata)
       (catch java.io.FileNotFoundException e
         (throw (ex-info (str "File not found at " file-path) {:dep dep})))))))
+
+(defmethod ig/init-key :cfg/param [_ data] data)

@@ -1,4 +1,5 @@
 {
+ :cfg/verbose true
  ;; :src/folder source point to a directory of edn files
  :src/folder ".udeps/"
 }
