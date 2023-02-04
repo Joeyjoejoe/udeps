@@ -4,11 +4,9 @@
             [integrant.repl.state :refer [system config]]
             [puget.printer :as puget]
             [clojure.java.io :as io]
+            [udeps.config :as uconf]
             [udeps.core :as udeps]))
 
 ;; https://github.com/weavejester/integrant-repl
 ;; Provides worflow function (prep) (init) (go) (reset) (halt)
-(integrant.repl/set-prep! #(ig/prep (-> "udeps-default.edn"
-                                        io/resource
-                                        slurp
-                                        ig/read-string)))
+(integrant.repl/set-prep! #(ig/prep (uconf/build)))

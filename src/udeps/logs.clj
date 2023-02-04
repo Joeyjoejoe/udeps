@@ -4,7 +4,7 @@
 ;;https://stackoverflow.com/questions/4842424/list-of-ansi-color-escape-sequences
 
 (def ^:dynamic verbose? true)
-(def head "\u001B[38;5;238m(µdeps)")
+(def head "\u001B[38;5;241m(µdeps)")
 
 (defn error
   [title msg]
@@ -26,7 +26,7 @@
           green      "\u001B[32m"
           green-bold "\u001B[32;1m"
           grey       "\u001B[38;5;243m"
-          dark-grey  "\u001B[38;5;238m"
+          dark-grey  "\u001B[38;5;248m"
           blue-bold  "\u001B[38;5;34;1m"
           reset      "\u001B[0m"]
 

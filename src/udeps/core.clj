@@ -1,5 +1,6 @@
 (ns udeps.core
-  (:require [udeps.config :as config]
+  (:require [integrant.core :as ig]
+            [udeps.config :as config]
             [udeps.parser :as parser]
             [udeps.logs :as log]))
 
@@ -26,7 +27,7 @@
   ```
   "
   [& deps]
-  (let [conf (config/init)]
+  (let [conf (ig/init (config/build))]
     `(do
        ~@(map
            (fn [dep]
