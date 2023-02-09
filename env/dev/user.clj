@@ -2,7 +2,6 @@
   (:require [integrant.core :as ig]
             [integrant.repl :refer [clear go halt prep init reset reset-all]]
             [integrant.repl.state :refer [system config]]
-            [puget.printer :as puget]
             [clojure.java.io :as io]
             [udeps.core :as udeps]))
 

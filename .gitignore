@@ -9,3 +9,6 @@ pom.xml.asc
 .nrepl-port
 .cpcache/
 NOTES.md
+.clj-kondo/
+.lsp/
+.udeps-cache/
