@@ -1,0 +1,3 @@
+{:name "hello-world"
+ :body "(fn []
+          (println \"hello-world\"))"}

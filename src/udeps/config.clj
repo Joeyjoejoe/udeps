@@ -1,7 +1,8 @@
 (ns udeps.config
   (:require [integrant.core :as ig]
             [clojure.java.io :as io]
-            [clojure.edn :as edn]))
+            [clojure.edn :as edn]
+            [org.httpkit.client :as http]))
 
 (derive :cfg/verbose :cfg/param)
 
@@ -28,3 +29,11 @@
           fdata)
         (catch java.io.FileNotFoundException e
           (throw (ex-info (str "File not found at " file-path) {:dep dep})))))))
+
+(defmethod ig/init-key :src/http [_ query-params]
+  (let [{:keys [url params]} query-params]
+    (fn [dep]
+      (let [fn-url   (str url (name dep))
+            response (http/get fn-url params)]
+
+        (-> @response :body edn/read-string)))))

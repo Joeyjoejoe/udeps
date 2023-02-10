@@ -1,5 +1,17 @@
-{
- :cfg/verbose true
- ;; :src/folder source point to a directory of edn files
+{:cfg/verbose true
+
+ ;; :src/folder Search and read an edn file in provided directory
+ ;;
+ ;;   (udeps/inject! :folder/foo)
+ ;;   => read file at .udeps/foo.edn
+
  :src/folder ".udeps/"
-}
+
+ ;; :src/http Perform an HTTP GET query that return a function edn file
+ ;;
+ ;;   (udeps/inject! :http/hello-world.edn)
+ ;;   => GET https://raw.githubu...nv/test/hello-world.edn
+
+ :src/http   {:url "https://raw.githubusercontent.com/Joeyjoejoe/micro-deps/master/env/test/resources/"
+              :headers {"Accept" "*/*"}
+              :timeout 1000}}
