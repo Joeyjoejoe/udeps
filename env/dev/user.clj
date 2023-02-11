@@ -3,9 +3,9 @@
             [integrant.repl :refer [clear go halt prep init reset reset-all]]
             [integrant.repl.state :refer [system config]]
             [clojure.java.io :as io]
-            [udeps.config :as uconf]
+            [udeps.cfg :as cfg]
             [udeps.core :as udeps]))
 
 ;; https://github.com/weavejester/integrant-repl
 ;; Provides worflow function (prep) (init) (go) (reset) (halt)
-(integrant.repl/set-prep! #(ig/prep (uconf/build)))
+(integrant.repl/set-prep! #(ig/prep (cfg/build)))
