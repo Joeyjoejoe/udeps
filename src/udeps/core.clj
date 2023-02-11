@@ -42,4 +42,5 @@
                      (do
                        (log/success fn-fullname (:source data))
                        `(def ~(symbol fn-name) ~(read-string body))))))))
-           deps))))
+           deps)
+       nil)))
