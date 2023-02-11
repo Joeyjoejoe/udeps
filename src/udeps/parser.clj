@@ -17,24 +17,24 @@
           (log/error (:dep data) msg)))))
 
 (defmulti read-dep!
-  (fn [dep conf]
+  (fn [dep cfg]
     (class dep)))
 
 (defmethod read-dep!
   clojure.lang.Keyword
-  [dep conf]
+  [dep cfg]
   (let [src-k   (src-key dep)]
-    (if-let [f (src-k conf)]
-      (if-let [data (c/get-cache dep)]
+    (if-let [f (src-k cfg)]
+      (if-let [data (c/get-cache cfg dep)]
         data
         (->> dep
              (query-dep f)
-             (c/save-cache! dep)))
+             (c/save-cache! cfg dep)))
       (log/error dep (str "Unknown source " src-k)))))
 
 (defmethod read-dep!
   clojure.lang.PersistentVector
-  [dep conf]
+  [dep cfg]
   (let [[fkey _ fname] dep]
-    (if-let [fdata (read-dep! fkey conf)]
+    (if-let [fdata (read-dep! fkey cfg)]
       (merge fdata {:name fname}))))

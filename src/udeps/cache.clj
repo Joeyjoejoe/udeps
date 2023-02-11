@@ -1,22 +1,26 @@
 (ns udeps.cache
-  (:require [clojure.java.io :as io]
-            [clojure.edn :as edn]))
+  (:require [clojure.edn :as edn]))
 
+(derive :cfg/cache?     :cfg/param)
+(derive :cfg/cache-path :cfg/param)
 
-(defn save-cache! [dep data]
-  (let [h  (hash dep)
-        filename (str ".udeps-cache/" h ".edn")]
-    (do
-      (-> ".udeps-cache/" java.io.File. .mkdir)
-      (spit filename (pr-str data))
-      data)))
+(defn save-cache! [cfg dep data]
+  (let [{:cfg/keys [cache? cache-path]} cfg]
+    (if (and cache? data)
+      (let [h  (hash dep)
+            fullpath (str cache-path h ".edn")]
+        (-> cache-path java.io.File. .mkdir)
+        (spit fullpath (pr-str data))))
+    data))
 
 
 (defn get-cache
-  [dep]
-  (let [h    (hash dep)
-        path (str ".udeps-cache/" h ".edn")]
-    (try
-      (if-let [data (-> path slurp edn/read-string)]
-        (assoc data :source :src/cache))
-      (catch java.io.FileNotFoundException e))))
+  [cfg dep]
+  (let [{:cfg/keys [cache? cache-path]} cfg
+        h        (hash dep)
+        fullpath (str cache-path h ".edn")]
+    (if cache?
+      (try
+        (if-let [data (-> fullpath slurp edn/read-string)]
+          (assoc data :source :src/cache))
+        (catch java.io.FileNotFoundException e)))))

@@ -1,4 +1,7 @@
-{:cfg/verbose true
+{:cfg/verbose    true
+
+ :cfg/cache?     true
+ :cfg/cache-path ".udeps-cache/"
 
  ;; :src/folder Search and read an edn file in provided directory
  ;;
