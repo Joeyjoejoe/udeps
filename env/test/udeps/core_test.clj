@@ -1,8 +1,14 @@
 (ns udeps.core-test
   (:require [clojure.test :as t]
-            [udeps.core :as core]))
+            [udeps.core :as udeps]))
 
-(t/deftest run
-  (t/testing "Test run function"
-    (t/is (= true (core/run)) "runs with default conf ?")
-    (t/is (boolean? (core/run)))) "output a boolean ?")
+(t/with-test
+
+  (def data {:output      (udeps/inject! :http/hello-world.edn)
+             :hello-world (-> 'hello-world resolve nil? not)})
+
+  (t/is (nil?      (:output data))
+        "inject! macro must return nil")
+
+  (t/is (not (nil? (:hello-world data)))
+        "hello-world function must be defined"))
