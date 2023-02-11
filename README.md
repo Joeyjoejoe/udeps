@@ -25,7 +25,7 @@ The keyword namespace is the **source** and its name the **identifier** `:source
 ```clojure
 user=> (udeps/inject! :http/hello-world.edn)
 (µdeps) ✔ user #'user/hello-world :src/http
-#'user/hello-world
+nil
 ```
 The `hello-world` function has been defined in the `user` namespace:
 ```clojure

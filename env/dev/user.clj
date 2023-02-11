@@ -1,8 +1,8 @@
 (ns user
   (:require [integrant.core :as ig]
+            [clojure.repl :as repl]
             [integrant.repl :refer [clear go halt prep init reset reset-all]]
             [integrant.repl.state :refer [system config]]
-            [clojure.java.io :as io]
             [udeps.cfg :as cfg]
             [udeps.core :as udeps]))
 
