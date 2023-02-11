@@ -10,11 +10,11 @@
 
 (defn- query-dep [f dep]
   (try
-    (assoc (f dep) :source (->> dep namespace (str ":src/")))
+    (assoc (f dep) :source (src-key dep))
     (catch clojure.lang.ExceptionInfo e
       (let [msg (ex-message e)
             data (ex-data e)]
-          (log/error (:dep data) msg)))))
+          (log/error (:dep data) msg (src-key dep))))))
 
 (defmulti read-dep!
   (fn [dep cfg]
@@ -30,7 +30,7 @@
         (->> dep
              (query-dep f)
              (c/save-cache! cfg dep)))
-      (log/error dep (str "Unknown source " src-k)))))
+      (log/error dep "Unknown source" src-k))))
 
 (defmethod read-dep!
   clojure.lang.PersistentVector
