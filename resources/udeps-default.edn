@@ -1,21 +1,24 @@
 {:cfg/verbose    true
-
  :cfg/cache?     true
  :cfg/cache-path ".udeps-cache/"
 
- ;; :src/local Search and read an edn file in provided directory
- ;;
- ;;   (udeps/inject! :local/foo)
- ;;   => read file at .udeps/foo.edn
+ ;;   Search and read a file at configured path,
+ ;;   keyword's identifier is the filename:
+ ;;     example: :local/foo.edn
+ ;;              => .udeps/foo.edn
 
  :src/local  ".udeps/"
 
- ;; :src/remote Perform an HTTP GET query that return a function edn file
- ;;
- ;;   (udeps/inject! :http/hello-world.edn)
- ;;   => GET https://raw.githubu...nv/test/hello-world.edn
+ ;;   Perform an HTTP get query that return a function's data map.
+ ;;     example:
+ ;;     :http/hello-world.edn
+ ;;     => GET https://raw.githubu...nv/test/hello-world.edn
 
- :src/remote {:url     "https://raw.githubusercontent.com/Joeyjoejoe/micro-deps/master/env/test/resources/"
-              :headers {"Accept" "*/*"}
-              :as      :auto
-              :timeout 1000}}
+ :src/remote {:url "https://raw.githubusercontent.com/Joeyjoejoe/micro-deps/master/env/test/resources/"
+              :headrs  {"Accept" "*/*"}
+              :timeout 1000
+              ;; :as      :auto
+              ;; :basic-auth ["user" "pass"]
+              ;; :query-params {:param "value" :param2 ["value1" "value2"]}
+              ;; :user-agent "User-Agent-string"
+              }}
