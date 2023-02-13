@@ -4,7 +4,7 @@
 
 (t/with-test
 
-  (def data {:output      (udeps/inject! :http/hello-world.edn)
+  (def data {:output      (udeps/inject! :remote/hello-world.edn)
              :hello-world (-> 'hello-world resolve nil? not)})
 
   (t/is (nil?      (:output data))

@@ -20,7 +20,7 @@
 
 (defmethod ig/init-key :cfg/param [_ data] data)
 
-(defmethod ig/init-key :src/folder [_ path]
+(defmethod ig/init-key :src/local [_ path]
   (fn [dep]
     (let [fname     (name dep)
           file-path (str path fname ".edn")]
@@ -30,7 +30,7 @@
         (catch java.io.FileNotFoundException e
           (throw (ex-info (str "File not found at " file-path) {:dep dep})))))))
 
-(defmethod ig/init-key :src/http [_ query-params]
+(defmethod ig/init-key :src/remote [_ query-params]
   (let [{:keys [url params]} query-params]
     (fn [dep]
       (let [fn-url   (str url (name dep))

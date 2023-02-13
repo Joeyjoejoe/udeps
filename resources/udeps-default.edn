@@ -3,18 +3,19 @@
  :cfg/cache?     true
  :cfg/cache-path ".udeps-cache/"
 
- ;; :src/folder Search and read an edn file in provided directory
+ ;; :src/local Search and read an edn file in provided directory
  ;;
- ;;   (udeps/inject! :folder/foo)
+ ;;   (udeps/inject! :local/foo)
  ;;   => read file at .udeps/foo.edn
 
- :src/folder ".udeps/"
+ :src/local  ".udeps/"
 
- ;; :src/http Perform an HTTP GET query that return a function edn file
+ ;; :src/remote Perform an HTTP GET query that return a function edn file
  ;;
  ;;   (udeps/inject! :http/hello-world.edn)
  ;;   => GET https://raw.githubu...nv/test/hello-world.edn
 
- :src/http   {:url "https://raw.githubusercontent.com/Joeyjoejoe/micro-deps/master/env/test/resources/"
+ :src/remote {:url     "https://raw.githubusercontent.com/Joeyjoejoe/micro-deps/master/env/test/resources/"
               :headers {"Accept" "*/*"}
+              :as      :auto
               :timeout 1000}}
