@@ -33,7 +33,8 @@
 (defmethod ig/init-key :src/remote [_ query-params]
   (let [{:keys [url params]} query-params]
     (fn [dep]
-      (let [fn-url   (str url (name dep))
-            response (http/get fn-url params)]
-
-        (-> @response :body edn/read-string)))))
+      (let [fn-url                      (str url (name dep))
+            {:keys [status body error]} @(http/get fn-url params)]
+        (if (= 200 status)
+          (edn/read-string body)
+          (throw (ex-info (str body) {:dep dep})))))))

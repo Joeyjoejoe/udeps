@@ -33,15 +33,17 @@
            (fn [dep]
              (binding [udeps.logs/verbose? (:cfg/verbose conf)]
                (if-let [data (parser/read-dep! dep conf)]
-                 (let [fn-name     (:name data)
-                       body        (:body data)
+                 (let [{:keys [body source]}  data
+                       fn-name     (:name data)
                        fn-fullname (str *ns* "/" (name fn-name))
                        var-name    (str "#'" fn-fullname) ]
 
                    (if (-> fn-fullname symbol resolve)
-                     (log/error dep (str var-name " already defined") (:source data))
-                     (do
-                       (log/success dep var-name (:source data))
-                       `(def ~(symbol fn-name) ~(read-string body))))))))
+                     (log/error dep (str var-name " already defined") source)
+                     (try
+                       (if-let [f `(def ~(symbol fn-name) ~(read-string body))]
+                          (do (log/success dep var-name source) f))
+                       (catch Exception e
+                         (log/error dep (ex-message e) source))))))))
            deps)
        nil)))
