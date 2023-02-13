@@ -23,7 +23,7 @@
 (defmethod ig/init-key :src/local [_ path]
   (fn [dep]
     (let [fname     (name dep)
-          file-path (str path fname ".edn")]
+          file-path (str path fname)]
       (try
         (if-let [fdata (-> file-path slurp edn/read-string)]
           fdata)
