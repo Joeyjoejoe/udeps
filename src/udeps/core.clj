@@ -36,14 +36,15 @@
                  (let [{:keys [body source]}  data
                        fn-name     (:name data)
                        fn-fullname (str *ns* "/" (name fn-name))
-                       var-name    (str "#'" fn-fullname) ]
+                       var-name    (str "#'" fn-fullname)
+                       log-data    {:dep dep :src source}]
 
                    (if (-> fn-fullname symbol resolve)
-                     (log/error dep (str var-name " already defined") source)
+                     (log/warn var-name (assoc log-data :msg "already defined"))
                      (try
                        (if-let [f `(def ~(symbol fn-name) ~(read-string body))]
-                          (do (log/success dep var-name source) f))
+                          (do (log/success var-name log-data) f))
                        (catch Exception e
-                         (log/error dep (ex-message e) source))))))))
+                         (log/error (assoc log-data :msg (ex-message e))))))))))
            deps)
        nil)))

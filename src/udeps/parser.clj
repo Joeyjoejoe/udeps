@@ -12,9 +12,10 @@
   (try
     (assoc (f dep) :source (src-key dep))
     (catch clojure.lang.ExceptionInfo e
-      (let [msg (ex-message e)
-            data (ex-data e)]
-          (log/error (:dep data) msg (src-key dep))))))
+      (let [log-data {:msg (ex-message e)
+                      :dep dep
+                      :src (src-key dep)}]
+          (log/error (merge (ex-data e) log-data ))))))
 
 (defmulti read-dep!
   (fn [dep cfg]
@@ -23,14 +24,16 @@
 (defmethod read-dep!
   clojure.lang.Keyword
   [dep cfg]
-  (let [src-k   (src-key dep)]
+  (let [src-k    (src-key dep)
+        log-data {:dep dep
+                  :src src-k}]
     (if-let [f (src-k cfg)]
       (if-let [data (c/get-cache cfg dep)]
         data
         (->> dep
              (query-dep f)
              (c/save-cache! cfg dep)))
-      (log/error dep "Unknown source" src-k))))
+      (log/error (assoc log-data :msg "Unknown source")))))
 
 (defmethod read-dep!
   clojure.lang.PersistentVector
