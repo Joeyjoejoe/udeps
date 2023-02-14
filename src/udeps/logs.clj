@@ -65,7 +65,7 @@
                (str orange title reset)
                (str dgray "{"
                     purple (if msg
-                             (str ":msg " dgray "\"" lorange msg dgray "\"")
-                             (str ":dep " wolfblue dep)))
+                             (str ":msg " dgray "\"" lorange msg dgray "\""))
+                    purple ":dep " wolfblue dep)
                (str purple ":src " wolfblue src dgray "}")
                reset))))

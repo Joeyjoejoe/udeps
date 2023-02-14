@@ -43,7 +43,7 @@
                      (try
                        (if-let [f `(def ~(symbol fn-name) ~(read-string body))]
                           (do (if defined?
-                                (log/warn var-name (assoc log-data :msg "function redefined"))
+                                (log/warn var-name (assoc log-data :msg "function overided"))
                                 (log/success var-name log-data))
                               f))
                        (catch Exception e
