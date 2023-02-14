@@ -11,7 +11,7 @@ This is a micro dependency and µdeps lets you use that function in your program
 ## Installation
 Add this to you deps.edn `:deps` map
 ```
-io.github.Joeyjoejoe/micro-deps {:git/tag "v1-alpha" :git/sha "09df7dc"}
+io.github.Joeyjoejoe/micro-deps {:git/sha "4ebd51cdb188cd283f9d978cb3c7a34b11c50d15"}
 ```
 ## Usage
 The `udeps.core` namespace provides a single macro `inject!`, that is used to inject a function in the current namespace.
@@ -24,7 +24,7 @@ As an example, the keyword for `#'hello-world` function hosted [here](https://ra
 It's composed of the `:remote` **source** and `:hello-world.edn` **identifier**. Let's inject the `#'hello-world` function in the current namespace:
 ```clojure
 user=> (udeps/inject! :remote/hello-world.edn)
-(µdeps) user ✔ :remote/hello-world.edn #'user/hello-world :src/remote
+(µdeps) user ✔ #'user/hello-world {:dep :remote/hello-world.edn :src :src/remote}
 nil
 ```
 The `hello-world` function has been defined in the `user` namespace:
