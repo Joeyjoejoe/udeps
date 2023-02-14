@@ -37,14 +37,16 @@
                        fn-name     (:name data)
                        fn-fullname (str *ns* "/" (name fn-name))
                        var-name    (str "#'" fn-fullname)
-                       log-data    {:dep dep :src source}]
+                       log-data    {:dep dep :src source}
+                       defined?    (-> fn-fullname symbol resolve)]
 
-                   (if (-> fn-fullname symbol resolve)
-                     (log/warn var-name (assoc log-data :msg "already defined"))
                      (try
                        (if-let [f `(def ~(symbol fn-name) ~(read-string body))]
-                          (do (log/success var-name log-data) f))
+                          (do (if defined?
+                                (log/warn var-name (assoc log-data :msg "function redefined"))
+                                (log/success var-name log-data))
+                              f))
                        (catch Exception e
-                         (log/error (assoc log-data :msg (ex-message e))))))))))
+                         (log/error (assoc log-data :msg (ex-message e)))))))))
            deps)
        nil)))
