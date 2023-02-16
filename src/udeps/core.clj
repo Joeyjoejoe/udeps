@@ -41,7 +41,9 @@
                        defined?    (-> fn-fullname symbol resolve)]
 
                      (try
-                       (if-let [f `(def ~(symbol fn-name) ~(read-string body))]
+                       (if-let [f `(def ~(symbol fn-name) ~(if (string? body)
+                                                             (read-string body)
+                                                             body))]
                           (do (if defined?
                                 (log/warn var-name (assoc log-data :msg "function overided"))
                                 (log/success var-name log-data))
