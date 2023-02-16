@@ -28,13 +28,15 @@
         (if-let [fdata (-> file-path slurp edn/read-string)]
           fdata)
         (catch java.io.FileNotFoundException e
-          (throw (ex-info (str "File not found at " file-path) {:dep dep})))))))
+          (throw (ex-info (str "File not found at " file-path) {:dep dep})))
+        (catch Exception e
+          (throw (ex-info (ex-message e) {:dep dep})) )))))
 
 (defmethod ig/init-key :src/remote [_ query-params]
   (let [{:keys [url params]} query-params]
     (fn [dep]
       (let [fn-url                      (str url (name dep))
-            {:keys [status body error]} @(http/get fn-url params)]
+            {:keys [status body error] :as r} @(http/get fn-url params)]
         (if (= 200 status)
           (edn/read-string body)
-          (throw (ex-info (str body) {:dep dep})))))))
+          (throw (ex-info (str (or error body r)) {:dep dep})))))))
