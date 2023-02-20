@@ -7,7 +7,6 @@
 
 (def head   "\u001B[0;38;5;241m(µdeps)")
 (def reset  "\u001B[0m")
-(def yellow "\u001B[0;38;5;250m")
 
 (defn error
   [data]
@@ -15,6 +14,7 @@
         icon      "\u2718"
         red       "\u001B[0;38;5;196m"
         dgray     "\u001B[0;38;5;241m"
+        lgray     "\u001B[0;38;5;244m"
         pink      "\u001B[0;38;5;222;1m"
         purple    "\u001B[0;38;5;161;1m"
         wolfblue  "\u001B[0;38;5;99m"]
@@ -22,7 +22,7 @@
     (println head
              (str pink *ns*)
              (str red icon)
-             (str dgray "{" purple ":msg " dgray "\"" red msg dgray "\"")
+             (str dgray "{" purple ":msg " dgray "\"" lgray msg dgray "\"")
              (str purple ":dep " wolfblue dep)
              (str purple ":src " wolfblue src dgray "}")
              reset)))
@@ -53,8 +53,8 @@
     (let [{:keys [dep src msg]} data
           icon       "\u2714"
           orange     "\u001B[0;38;5;202m"
-          lorange     "\u001B[0;38;5;202m"
           purple     "\u001B[0;38;5;161;1m"
+          lgray     "\u001B[0;38;5;230m"
           pink       "\u001B[0;38;5;222;1m"
           wolfblue   "\u001B[0;38;5;99m"
           dgray      "\u001B[0;38;5;241m"]
@@ -65,7 +65,7 @@
                (str orange title reset)
                (str dgray "{"
                     purple (if msg
-                             (str ":msg " dgray "\"" lorange msg dgray "\""))
+                             (str ":msg " dgray "\"" wolfblue msg dgray "\""))
                     purple ":dep " wolfblue dep)
                (str purple ":src " wolfblue src dgray "}")
                reset))))

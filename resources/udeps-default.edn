@@ -18,10 +18,11 @@
  ;;     => GET https://raw.githubu...nv/test/hello-world.edn
 
  :src/remote {:url "https://raw.githubusercontent.com/Joeyjoejoe/micro-deps/master/env/test/resources/"
-              :headrs  {"Accept" "*/*"}
+              :headers  {"Accept" "*/*"}
               :timeout 1000
-              ;; :as      :auto
+              :as      :auto
               ;; :basic-auth ["user" "pass"]
               ;; :query-params {:param "value" :param2 ["value1" "value2"]}
               ;; :user-agent "User-Agent-string"
-              }}
+              }
+}
