@@ -41,14 +41,25 @@
                        defined?    (-> fn-fullname symbol resolve)]
 
                      (try
-                       (if-let [f `(def ~(symbol fn-name) ~(if (string? body)
-                                                             (read-string body)
-                                                             body))]
+                       (if-let [f `~(read-string body)]
                           (do (if defined?
-                                (log/warn var-name (assoc log-data :msg "function overided"))
+                                (log/warn var-name (assoc log-data :msg "function overridden"))
                                 (log/success var-name log-data))
                               f))
                        (catch Exception e
                          (log/error (assoc log-data :msg (ex-message e)))))))))
            deps)
        nil)))
+
+
+(defmacro depn
+  "Perform a usual defn but adds extra metadata for exporting the function as a udeps"
+  [name & fdecl]
+  (let [foo (apply str fdecl)]
+  `(defn ~(vary-meta name merge {:source foo
+                                 :name   name})
+         ~@fdecl)))
+
+
+
+

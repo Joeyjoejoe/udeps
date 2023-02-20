@@ -1,0 +1,4 @@
+{:name "usave!"
+ :body "(fn [fn-name path]
+         (with-open [wrtr (clojure.java.io/writer (str path (name fn-name)))]
+           (.write wrtr (str {:name (name fn-name) :body (clojure.repl/source-fn fn-name)}))))"}
