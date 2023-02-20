@@ -41,14 +41,44 @@
                        defined?    (-> fn-fullname symbol resolve)]
 
                      (try
-                       (if-let [f `(def ~(symbol fn-name) ~(if (string? body)
-                                                             (read-string body)
-                                                             body))]
+                       (if-let [f `~(read-string body)]
                           (do (if defined?
-                                (log/warn var-name (assoc log-data :msg "function overided"))
+                                (log/warn var-name (assoc log-data :msg "function overridden"))
                                 (log/success var-name log-data))
                               f))
                        (catch Exception e
                          (log/error (assoc log-data :msg (ex-message e)))))))))
            deps)
        nil)))
+
+
+(defmacro defdep
+  "Perform a usual defn but adds extra metadata to facilitate udeps export"
+  [fname & fdecl]
+  (let [source (clojure.string/join " " fdecl)]
+    `(defn ~(vary-meta fname merge {:source-code  source
+                                    :fname (name fname)})
+       ~@fdecl)))
+
+
+(derive :cfg/export-path :cfg/param)
+
+(defn export!
+  "Export function to udeps file"
+  [fn-var]
+  (let [{:keys [fname source-code arglists]} (meta fn-var)
+        udeps-cfg (ig/init (cfg/build))
+        fn-name   (or fname (name (symbol fn-var)))
+        body      (or source-code (clojure.repl/source-fn (symbol fn-var)))
+        file-path  (str (:cfg/export-path udeps-cfg) fn-name)]
+
+    (println file-path)
+
+    (with-open [wrtr (clojure.java.io/writer file-path)]
+      (.write wrtr (str {:name     fn-name
+                         :body     body
+                         :arglists arglists})))
+    file-path))
+
+
+

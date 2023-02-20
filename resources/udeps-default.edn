@@ -1,6 +1,9 @@
 {:cfg/verbose    true
+
  :cfg/cache?     true
  :cfg/cache-path ".udeps-cache/"
+
+ :cfg/export-path "./"
 
  ;;   Search and read a file at configured path,
  ;;   keyword's identifier is the filename:
