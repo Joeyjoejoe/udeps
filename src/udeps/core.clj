@@ -1,5 +1,6 @@
 (ns udeps.core
   (:require [integrant.core :as ig]
+            [clojure.repl :as repl]
             [udeps.cfg :as cfg]
             [udeps.parser :as parser]
             [udeps.logs :as log]))
@@ -69,7 +70,7 @@
   (let [{:keys [fname source-code arglists]} (meta fn-var)
         udeps-cfg (ig/init (cfg/build))
         fn-name   (or fname (name (symbol fn-var)))
-        body      (or source-code (clojure.repl/source-fn (symbol fn-var)))
+        body      (or source-code (repl/source-fn (symbol fn-var)))
         file-path  (str (:cfg/export-path udeps-cfg) fn-name)]
 
     (println file-path)

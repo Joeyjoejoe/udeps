@@ -41,3 +41,10 @@
   (let [[fkey _ fname] dep]
     (if-let [fdata (read-dep! fkey cfg)]
       (merge fdata {:name fname}))))
+
+(defmethod read-dep!
+  java.lang.String
+  [dep cfg]
+  (if (re-matches #"^http.*" dep)
+    (read-dep! (->> dep (str "url/") keyword) cfg)
+    (read-dep! (->> dep (str "file/") keyword) cfg)))

@@ -25,4 +25,22 @@
               ;; :query-params {:param "value" :param2 ["value1" "value2"]}
               ;; :user-agent "User-Agent-string"
               }
+
+ ;; Below are utility sources, not designed to be used directly but
+ ;; automatically when inject! is given string instead of namespaced keywords
+
+ ;; Inject function based on an absolute path to a file
+ ;;   example:
+ ;;   (inject! "/home/victor/Projects/micro-deps/env/test/resources/hello-world.edn")
+
+ :src/file   ""
+
+ ;; Inject function given an url
+ ;;   example:
+ ;;   (udeps/inject! "https://raw.githubusercontent.com/Joeyjoejoe/my-deps/master/udeps/puts")
+
+ :src/url    {:url ""
+              :headers  {"Accept" "*/*"}
+              :timeout 1000
+              :as      :auto}
 }

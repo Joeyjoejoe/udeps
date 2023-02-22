@@ -40,3 +40,6 @@
         (if (= 200 status)
           (edn/read-string body)
           (throw (ex-info (str (or error body r)) {:dep dep})))))))
+
+(derive :src/url :src/remote)
+(derive :src/file :src/local)
