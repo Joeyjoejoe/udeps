@@ -5,6 +5,7 @@
             [org.httpkit.client :as http]))
 
 (derive :cfg/verbose :cfg/param)
+(derive :cfg/export-path :cfg/param)
 
 (defn- read-cfg [path]
   (if-let [cfg (io/resource path)]
