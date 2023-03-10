@@ -1,14 +1,27 @@
 (ns udeps.core-test
-  (:require [clojure.test :as t]
-            [udeps.core :as udeps]))
+  (:require [clojure.test :refer [deftest testing is]]
+            [udeps.core :as udeps]
+            [udeps.tools :as utool]))
 
-(t/with-test
+;; (deftest
+;;
+;;   (def data {:output      (utool/export! #'cat)
+;;              :hello-world (-> 'hello-world resolve nil? not)})
+;;
+;;   (is (nil?      (:output data))
+;;         "inject! macro must return nil")
+;;
+;;   (is (not (nil? (:hello-world data)))
+;;         "hello-world function must be defined"))
 
-  (def data {:output      (udeps/inject! :remote/hello-world.edn)
-             :hello-world (-> 'hello-world resolve nil? not)})
+(defn classic-fn [] true)
+(defn arity-fn ([] true) ([x] x))
 
-  (t/is (nil?      (:output data))
-        "inject! macro must return nil")
+(deftest tools-test
+  (testing  "Testing (export! #'classic-fn)"
+    (let [dep-path (utool/export! #'classic-fn)
+          _        (udeps/inject! [:local/classic-fn :as :inject])]
+      (is (= ".udeps/classic-fn" dep-path))))
 
-  (t/is (not (nil? (:hello-world data)))
-        "hello-world function must be defined"))
+  )
+

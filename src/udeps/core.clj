@@ -41,12 +41,15 @@
                        defined?    (-> fn-fullname symbol resolve)]
 
                      (try
-                       (if-let [f `(def ~(symbol fn-name) ~(read-string (str "(fn " body ")")))]
+                       (if-let [f `(defn ~(symbol fn-name) ~@(read-string body))]
                           (do (if defined?
                                 (log/warn var-name (assoc log-data :msg "function overridden"))
                                 (log/success var-name log-data))
                               f))
                        (catch Exception e
-                         (log/error (assoc log-data :msg (ex-message e)))))))))
+                         (log/error (assoc log-data
+                                           :error (ex-message e)
+                                           :at    (map clojure.repl/stack-element-str (.getStackTrace e)))))
+                       )))))
            deps)
        nil)))
