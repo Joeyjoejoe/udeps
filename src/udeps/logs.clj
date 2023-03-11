@@ -10,7 +10,8 @@
 
 (defn error
   [data]
-  (let [{:keys [dep src msg]} data
+  (let [{:keys [dep src]} data
+        metadata  (dissoc data :dep :src)
         icon      "\u2718"
         red       "\u001B[0;38;5;196m"
         dgray     "\u001B[0;38;5;241m"
@@ -22,7 +23,16 @@
     (println head
              (str pink *ns*)
              (str red icon)
-             (str dgray "{" purple ":msg " dgray "\"" lgray msg dgray "\"")
+             (str dgray
+                  "{"
+                  (clojure.string/join " "
+                                       (mapv #(str purple
+                                                   (-> % first pr-str)
+                                                   " "
+                                                   lgray
+                                                   (-> % last pr-str)
+                                                   reset)
+                                             metadata)))
              (str purple ":dep " wolfblue dep)
              (str purple ":src " wolfblue src dgray "}")
              reset)))

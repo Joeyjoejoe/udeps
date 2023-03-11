@@ -48,6 +48,9 @@
                                 (log/success var-name log-data))
                               f))
                        (catch Exception e
-                         (log/error (assoc log-data :msg (ex-message e)))))))))
+                         (log/error (assoc log-data
+                                           :error (ex-message e)
+                                           :at    (map repl/stack-element-str (.getStackTrace e)))))
+                       )))))
            deps)
        nil)))
