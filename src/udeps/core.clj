@@ -1,5 +1,6 @@
 (ns udeps.core
   (:require [integrant.core :as ig]
+            [clojure.repl :as repl]
             [udeps.cfg :as cfg]
             [udeps.parser :as parser]
             [udeps.logs :as log]))
@@ -41,7 +42,7 @@
                        defined?    (-> fn-fullname symbol resolve)]
 
                      (try
-                       (if-let [f `(def ~(symbol fn-name) ~(read-string (str "(fn " body ")")))]
+                       (if-let [f `(defn ~(symbol fn-name) ~@(read-string body))]
                           (do (if defined?
                                 (log/warn var-name (assoc log-data :msg "function overridden"))
                                 (log/success var-name log-data))

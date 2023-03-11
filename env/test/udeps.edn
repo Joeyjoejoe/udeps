@@ -1,0 +1,2 @@
+{:cfg/cache? false
+ :cfg/verbose false}

@@ -1,14 +1,34 @@
 (ns udeps.core-test
-  (:require [clojure.test :as t]
-            [udeps.core :as udeps]))
+  (:require [clojure.test :refer [deftest testing is]]
+            [udeps.core :as udeps]
+            [udeps.tools :as utool]))
 
-(t/with-test
+(defn classic-fn [] true)
+(defn arity-fn ([] true) ([x] x))
 
-  (def data {:output      (udeps/inject! :remote/hello-world.edn)
-             :hello-world (-> 'hello-world resolve nil? not)})
+(deftest tools-test
 
-  (t/is (nil?      (:output data))
-        "inject! macro must return nil")
+  (testing  "Testing function export/import"
+    (let [_           (utool/export! #'classic-fn)
+          _           (udeps/inject! [:local/classic-fn :as :aliased])
+          aliased-var (ns-resolve 'udeps.core-test (symbol :aliased))]
 
-  (t/is (not (nil? (:hello-world data)))
-        "hello-world function must be defined"))
+      (is (= false (nil? aliased-var))
+          "inject! defines a function")
+
+      (is (= (classic-fn) (aliased-var))
+          "export! & inject! functions are identical")))
+
+  (testing  "Testing multi arity function export/import"
+    (let [_           (utool/export! #'arity-fn)
+          _           (udeps/inject! [:local/arity-fn :as :arity-fn])
+          arity-var (ns-resolve 'udeps.core-test (symbol :arity-fn))]
+
+      (is (= false (nil? arity-var))
+          "inject! defines a function")
+
+      (is (= (arity-fn) (arity-var))
+          "export! & inject! functions are identical")
+
+      (is (= (arity-fn 1) (arity-var 1))
+          "Multi arity is preserved"))))
